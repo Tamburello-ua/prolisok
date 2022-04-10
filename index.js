@@ -21,7 +21,7 @@
     function t() {
       const e = { lat: 49.83154325978491, lng: 36.055631135182466 },
         o = new google.maps.Map(document.getElementById("map"), {
-          zoom: 8,
+          zoom: 12,
           center: e,
           styles: [{
             featureType: 'poi',
