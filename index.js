@@ -23,8 +23,7 @@ function initMap() {
     document
         .getElementById("delete-markers")
         .addEventListener("click", deleteMarkers);
-    // Adds a marker at the center of the map.
-    addMarker(haightAshbury);
+
 };
 
 function drawLine() {
@@ -73,4 +72,5 @@ function showMarkers() {
 function deleteMarkers() {
     hideMarkers();
     markers = [];
+    coords = [];
 }
