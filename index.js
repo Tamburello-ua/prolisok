@@ -91,9 +91,9 @@ function calculateBoomPosition() {
                 // drawLineBetweenTwoLocations(position, position2);
 
                 var delay = sensorsTimes[i] - sensorsTimes[z];
-                if (sensorsTimes[i] < sensorsTimes[z]) {
-                    delay = sensorsTimes[z] - sensorsTimes[i];
-                }
+                // if (sensorsTimes[i] < sensorsTimes[z]) {
+                //     delay = sensorsTimes[z] - sensorsTimes[i];
+                // }
 
                 lineCenter(position, position2, delay);
             }
