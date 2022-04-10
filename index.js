@@ -70,9 +70,8 @@ function addBoom(position) {
 
     boomMarker.setMap(map);
 
+    calculateSensorTime(position);
 
-
-    // bindInfoWindow(marker, map, infowindow, description);
 }
 
 function calculateSensorTime(boomPosition) {
@@ -82,6 +81,31 @@ function calculateSensorTime(boomPosition) {
         var time = google.maps.geometry.spherical.computeDistanceBetween(position, boomPosition) / soundSpeed;
         sensorsTimes.push(boomTime + time);
     });
+}
+
+function calculateBoomPosition() {
+    locations.map((position, i) => {
+        locations.map((position2, z) => {
+            if (i != z) {
+
+            }
+        });
+    });
+}
+
+function drawLineBetweenTwoLocations(location_1, location_2) {
+    var path;
+    path.push(location_1);
+    path.push(location_2);
+    var line = new google.maps.Polyline({
+        path: path,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+
+    line.setMap(map);
 }
 
 function initMarkers() {
@@ -117,7 +141,7 @@ function addMarker(position) {
     markers.push(marker);
     coords.push(position);
 
-    drawLine();
+    // drawLine();
     if (coords.length > 1) {
         var infowindowL = new google.maps.InfoWindow({
             content: ""
