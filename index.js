@@ -83,8 +83,6 @@ function removeLine() {
     line.setMap(null);
 }
 
-
-// Adds a marker to the map and push to the array.
 function addMarker(position) {
     const marker = new google.maps.Marker({
         position,
@@ -95,27 +93,34 @@ function addMarker(position) {
     coords.push(position);
 
     drawLine();
+    if (coords.length > 1) {
+        var description = computeDistanceBetween(position, coords[coords.length - 1]);
+    }
+
+    bindInfoWindow(marker, map, infowindow, description);
 }
 
-// Sets the map on all markers in the array.
+function bindInfoWindow(marker, map, infowindow, description) {
+    marker.addListener('click', function() {
+        infowindow.setContent(description);
+        infowindow.open(map, this);
+    });
+}
+
 function setMapOnAll(map) {
     for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(map);
     }
 }
 
-// Removes the markers from the map, but keeps them in the array.
 function hideMarkers() {
     setMapOnAll(null);
 }
 
-// Shows any markers currently in the array.
 function showMarkers() {
     setMapOnAll(map);
 }
 
-
-// Deletes all markers in the array by removing references to them.
 function deleteMarkers() {
     hideMarkers();
     markers = [];
