@@ -1,11 +1,29 @@
 let map;
+let markers = [];
+
 
 function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 14,
-    center: new google.maps.LatLng(49.950981643157625,  36.035932992177095),
-    mapTypeId: "terrain",
-  });
+    map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 18,
+        center: new google.maps.LatLng(49.950981643157625, 36.035932992177095),
+        mapTypeId: "hybrid",
+    });
+
+    map.addListener("click", (event) => {
+        addMarker(event.latLng);
+    });
+    // add event listeners for the buttons
+    document
+        .getElementById("show-markers")
+        .addEventListener("click", showMarkers);
+    document
+        .getElementById("hide-markers")
+        .addEventListener("click", hideMarkers);
+    document
+        .getElementById("delete-markers")
+        .addEventListener("click", deleteMarkers);
+    // Adds a marker at the center of the map.
+    addMarker(haightAshbury);
 };
 
 
@@ -42,7 +60,7 @@ function initMap() {
 //             featureType: 'transit.station',
 //             stylers: [{ visibility: 'off' }]  // Turn off bus, train stations etc.
 //           }],
-          
+
 //           streetViewControl: false,
 //         });
 //       let t = new google.maps.InfoWindow({
