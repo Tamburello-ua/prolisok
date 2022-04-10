@@ -97,12 +97,12 @@ function drawLine() {
     line = new google.maps.Polyline({
         path: coords,
         geodesic: true,
-        strokeColor: '#' + lineColor + '0000',
+        strokeColor: '#FF0000',
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
 
-    lineColor = lineColor + 20;
+    lineColor = lineColor + 10;
 
     line.setMap(map);
 }
