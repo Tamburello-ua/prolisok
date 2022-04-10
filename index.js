@@ -101,7 +101,8 @@ function lineCenter(position1, position2, delay) {
     var distance = google.maps.geometry.spherical.computeDistanceBetween(position1, position2);
     var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance / 2, heading);
 
-    var calcHead = Math.acos((soundSpeed * delay) / distance);
+    var val1 = (soundSpeed * delay) / distance;
+    var calcHead = Math.acos(val1);
 
     var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 4000, calcHead);
 
