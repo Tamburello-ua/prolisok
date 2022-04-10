@@ -27,12 +27,27 @@ function initMap() {
     });
 
     let infoWindow = new google.maps.InfoWindow({
-        content: "Click the map to get Lat/Lng!",
-
+        content: "",
     });
 
+    // map.addListener("click", (event) => {
+    //     addMarker(event.latLng);
+
+    //     // Close the current InfoWindow.
+    //     infoWindow.close();
+    //     // Create a new InfoWindow.
+    //     infoWindow = new google.maps.InfoWindow({
+    //         position: event.latLng,
+    //     });
+    //     infoWindow.setContent(
+    //         JSON.stringify(event.latLng.toJSON(), null, 6)
+    //     );
+    //     infoWindow.open(map);
+
+    // });
+
     map.addListener("click", (event) => {
-        addMarker(event.latLng);
+        addBoom(event.latLng);
 
         // Close the current InfoWindow.
         infoWindow.close();
@@ -46,6 +61,7 @@ function initMap() {
         infoWindow.open(map);
 
     });
+
     // add event listeners for the buttons
     document
         .getElementById("show-markers")
@@ -60,6 +76,20 @@ function initMap() {
     initMarkers();
 
 };
+
+function addBoom(position) {
+    const boomMarker = new google.maps.Marker({
+        position,
+        map,
+        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+    });
+
+    boomMarker.setMap(map);
+
+
+
+    // bindInfoWindow(marker, map, infowindow, description);
+}
 
 function initMarkers() {
     locations.map((position, i) => {
