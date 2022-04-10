@@ -57,6 +57,8 @@ function initMap() {
         .getElementById("delete-markers")
         .addEventListener("click", deleteMarkers);
 
+    initMarkers();
+
 };
 
 function initMarkers() {
