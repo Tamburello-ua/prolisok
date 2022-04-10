@@ -128,7 +128,7 @@ function addMarker(position) {
 
         var prevPosition = coords[coords.length - 1];
         var description = google.maps.geometry.spherical.computeDistanceBetween(position, prevPosition);
-        bindInfoWindow(marker, map, infowindowL, description);
+        bindInfoWindow(marker, map, infowindowL, "" + description);
     }
 }
 
