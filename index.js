@@ -1,5 +1,6 @@
 let map;
 let line;
+let infoWindow;
 let markers = [];
 let coords = [];
 let lineColor = 0;
@@ -26,7 +27,7 @@ function initMap() {
         mapTypeId: "hybrid",
     });
 
-    let infoWindow = new google.maps.InfoWindow({
+    infoWindow = new google.maps.InfoWindow({
         content: "",
     });
 
