@@ -1,4 +1,5 @@
 let map;
+let line;
 let markers = [];
 let coords = [];
 
@@ -61,7 +62,7 @@ function initMarkers() {
 }
 
 function drawLine() {
-    var line = new google.maps.Polyline({
+    line = new google.maps.Polyline({
         path: coords,
         geodesic: true,
         strokeColor: '#FF0000',
@@ -71,6 +72,11 @@ function drawLine() {
 
     line.setMap(map);
 }
+
+function removeLine() {
+    line.setMap(null);
+}
+
 
 // Adds a marker to the map and push to the array.
 function addMarker(position) {
@@ -102,10 +108,11 @@ function showMarkers() {
     setMapOnAll(map);
 }
 
+
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers() {
     hideMarkers();
     markers = [];
     coords = [];
-    drawLine();
+    removeLine();
 }
