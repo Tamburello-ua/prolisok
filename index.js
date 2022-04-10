@@ -1,6 +1,6 @@
 let map;
 let line;
-let infoWindow;
+var infoWindow;
 let markers = [];
 let coords = [];
 let lineColor = 0;
@@ -27,9 +27,7 @@ function initMap() {
         mapTypeId: "hybrid",
     });
 
-    infoWindow = new google.maps.InfoWindow({
-        content: "",
-    });
+
 
     // map.addListener("click", (event) => {
     //     addMarker(event.latLng);
@@ -127,10 +125,14 @@ function addMarker(position) {
 
     drawLine();
     if (coords.length > 1) {
+        infowindow = new google.maps.InfoWindow({
+            content: ""
+        });
         var description = computeDistanceBetween(position, coords[coords.length - 1]);
+        bindInfoWindow(marker, map, infowindow, description);
     }
 
-    bindInfoWindow(marker, map, infowindow, description);
+
 }
 
 function bindInfoWindow(marker, map, infowindow, description) {
