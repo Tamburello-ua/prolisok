@@ -73,4 +73,5 @@ function deleteMarkers() {
     hideMarkers();
     markers = [];
     coords = [];
+    drawLine();
 }
