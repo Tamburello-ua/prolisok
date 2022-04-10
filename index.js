@@ -1,10 +1,11 @@
 let map;
 let markers = [];
+let coords = [];
 
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 14,
+        zoom: 15,
         center: new google.maps.LatLng(49.950981643157625, 36.035932992177095),
         mapTypeId: "hybrid",
     });
@@ -26,6 +27,18 @@ function initMap() {
     addMarker(haightAshbury);
 };
 
+function drawLine() {
+    var line = new google.maps.Polyline({
+        path: coords,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+
+    line.setMap(map);
+}
+
 // Adds a marker to the map and push to the array.
 function addMarker(position) {
     const marker = new google.maps.Marker({
@@ -34,6 +47,9 @@ function addMarker(position) {
     });
 
     markers.push(marker);
+    coords.push(position);
+
+    drawLine();
 }
 
 // Sets the map on all markers in the array.
