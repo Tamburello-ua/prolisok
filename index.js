@@ -15,9 +15,7 @@ const locations = [
     { lat: 49.9476086587322, lng: 36.02009069874675 },
     { lat: 49.9493699660205, lng: 36.03096957578924 },
     { lat: 49.9451551198959, lng: 36.04336138143805 },
-
 ];
-
 
 
 function initMap() {
@@ -33,7 +31,6 @@ function initMap() {
 
     // map.addListener("click", (event) => {
     //     addMarker(event.latLng);
-
     //     // Close the current InfoWindow.
     //     infoWindow.close();
     //     // Create a new InfoWindow.
@@ -44,7 +41,6 @@ function initMap() {
     //         JSON.stringify(event.latLng.toJSON(), null, 6)
     //     );
     //     infoWindow.open(map);
-
     // });
 
     map.addListener("click", (event) => {
@@ -63,7 +59,6 @@ function initMap() {
 
     });
 
-    // add event listeners for the buttons
     document
         .getElementById("show-markers")
         .addEventListener("click", showMarkers);
@@ -82,7 +77,7 @@ function addBoom(position) {
     const boomMarker = new google.maps.Marker({
         position,
         map,
-        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
     });
 
     boomMarker.setMap(map);
@@ -133,8 +128,6 @@ function addMarker(position) {
         var description = google.maps.geometry.spherical.computeDistanceBetween(position, coords[coords.length - 1]);
         bindInfoWindow(marker, map, infowindowL, description);
     }
-
-
 }
 
 function bindInfoWindow(marker, map, infowindow, description) {
