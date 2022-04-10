@@ -88,8 +88,13 @@ function calculateBoomPosition() {
     locations.map((position, i) => {
         locations.map((position2, z) => {
             if (i != z) {
-                drawLineBetweenTwoLocations(position, position2);
-                delay = sensorsTimes[i] - sensorsTimes[z];
+                // drawLineBetweenTwoLocations(position, position2);
+
+                var delay = sensorsTimes[i] - sensorsTimes[z];
+                if (sensorsTimes[i] < sensorsTimes[z]) {
+                    delay = sensorsTimes[z] - sensorsTimes[i];
+                }
+
                 lineCenter(position, position2, delay);
             }
         });
@@ -100,6 +105,8 @@ function lineCenter(position1, position2, delay) {
     var heading = google.maps.geometry.spherical.computeHeading(position1, position2);
     var distance = google.maps.geometry.spherical.computeDistanceBetween(position1, position2);
     var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance / 2, heading);
+
+    drawLineBetweenTwoLocations(position1, google.maps.geometry.spherical.computeOffset(position1, distance, heading), '#0000FF');
 
     var val1 = (soundSpeed * delay) / distance;
     var calcHead = Math.acos(val1);
