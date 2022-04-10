@@ -2,6 +2,22 @@ let map;
 let markers = [];
 let coords = [];
 
+const locations = [
+    { lat: -31.56391, lng: 147.154312 },
+    { lat: -33.718234, lng: 150.363181 },
+    { lat: -33.727111, lng: 150.371124 },
+    { lat: -33.848588, lng: 151.209834 },
+    { lat: -33.851702, lng: 151.216968 },
+    { lat: -34.671264, lng: 150.863657 },
+    { lat: -35.304724, lng: 148.662905 },
+    { lat: -36.817685, lng: 175.699196 },
+
+];
+
+let infoWindow = new google.maps.InfoWindow({
+    content: "Click the map to get Lat/Lng!",
+
+});
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
@@ -12,6 +28,18 @@ function initMap() {
 
     map.addListener("click", (event) => {
         addMarker(event.latLng);
+
+        // Close the current InfoWindow.
+        infoWindow.close();
+        // Create a new InfoWindow.
+        infoWindow = new google.maps.InfoWindow({
+            position: event.latLng,
+        });
+        infoWindow.setContent(
+            JSON.stringify(event.latLng.toJSON(), null, 6)
+        );
+        infoWindow.open(map);
+
     });
     // add event listeners for the buttons
     document
@@ -25,6 +53,12 @@ function initMap() {
         .addEventListener("click", deleteMarkers);
 
 };
+
+function initMarkers() {
+    locations.map((position, i) => {
+        addMarker(position);
+    });
+}
 
 function drawLine() {
     var line = new google.maps.Polyline({
