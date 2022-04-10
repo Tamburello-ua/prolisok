@@ -71,6 +71,7 @@ function addBoom(position) {
     boomMarker.setMap(map);
 
     calculateSensorTime(position);
+    calculateBoomPosition();
 
 }
 
@@ -93,14 +94,23 @@ function calculateBoomPosition() {
     });
 }
 
-function drawLineBetweenTwoLocations(location_1, location_2) {
+function lineCenter(position1, position2) {
+    var heading = google.maps.geometry.spherical.computeHeading(position1, position2);
+    var distance = time = google.maps.geometry.spherical.computeDistanceBetween(position1, position2) / 2;
+    var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance, heading);
+    var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 4000, heading + 90);
+
+    drawLineBetweenTwoLocations(centerPosition, calcPosit, '#00FF00');
+}
+
+function drawLineBetweenTwoLocations(location_1, location_2, color = '#FF0000') {
     var path;
     path.push(location_1);
     path.push(location_2);
     var line = new google.maps.Polyline({
         path: path,
         geodesic: true,
-        strokeColor: '#FF0000',
+        strokeColor: color,
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
