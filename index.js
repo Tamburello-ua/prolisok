@@ -4,6 +4,9 @@ let infoWindow;
 let markers = [];
 let coords = [];
 let lineColor = 0;
+let soundSpeed = 331;
+let sensorsTimes = [];
+let boomTime;
 
 
 const locations = [
@@ -29,34 +32,17 @@ function initMap() {
         content: ""
     });
 
-    // map.addListener("click", (event) => {
-    //     addMarker(event.latLng);
-    //     // Close the current InfoWindow.
-    //     infoWindow.close();
-    //     // Create a new InfoWindow.
-    //     infoWindow = new google.maps.InfoWindow({
-    //         position: event.latLng,
-    //     });
-    //     infoWindow.setContent(
-    //         JSON.stringify(event.latLng.toJSON(), null, 6)
-    //     );
-    //     infoWindow.open(map);
-    // });
-
     map.addListener("click", (event) => {
         addBoom(event.latLng);
 
-        // Close the current InfoWindow.
-        infoWindow.close();
-        // Create a new InfoWindow.
-        infoWindow = new google.maps.InfoWindow({
-            position: event.latLng,
-        });
-        infoWindow.setContent(
-            JSON.stringify(event.latLng.toJSON(), null, 6)
-        );
-        infoWindow.open(map);
-
+        // infoWindow.close();
+        // infoWindow = new google.maps.InfoWindow({
+        //     position: event.latLng,
+        // });
+        // infoWindow.setContent(
+        //     JSON.stringify(event.latLng.toJSON(), null, 6)
+        // );
+        // infoWindow.open(map);
     });
 
     document
@@ -74,6 +60,8 @@ function initMap() {
 };
 
 function addBoom(position) {
+    boomTime = Date.now();
+
     const boomMarker = new google.maps.Marker({
         position,
         map,
@@ -85,6 +73,15 @@ function addBoom(position) {
 
 
     // bindInfoWindow(marker, map, infowindow, description);
+}
+
+function calculateSensorTime(boomPosition) {
+    sensorsTimes = [];
+
+    locations.map((position, i) => {
+        var time = google.maps.geometry.spherical.computeDistanceBetween(position, boomPosition) / soundSpeed;
+        sensorsTimes.push(boomTime + time);
+    });
 }
 
 function initMarkers() {
