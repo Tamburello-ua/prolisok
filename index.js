@@ -109,11 +109,16 @@ function lineCenter(position1, position2, delay) {
     drawLineBetweenTwoLocations(position1, google.maps.geometry.spherical.computeOffset(position1, distance, heading), '#0000FF');
 
     var val1 = (soundSpeed * delay) / distance;
-    var calcHead = Math.acos(val1);
+    var calcHead = radiansToDegrees(Math.acos(val1));
 
     var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 4000, heading - 90 - calcHead);
 
     drawLineBetweenTwoLocations(centerPosition, calcPosit, '#00FF00');
+}
+
+function radiansToDegrees(radians) {
+    var pi = Math.PI;
+    return radians * (180 / pi);
 }
 
 function drawLineBetweenTwoLocations(location_1, location_2, color = '#FF0000') {
