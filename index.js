@@ -89,17 +89,21 @@ function calculateBoomPosition() {
         locations.map((position2, z) => {
             if (i != z) {
                 drawLineBetweenTwoLocations(position, position2);
-                lineCenter(position, position2);
+                delay = sensorsTimes[i] - sensorsTimes[z];
+                lineCenter(position, position2, delay);
             }
         });
     });
 }
 
-function lineCenter(position1, position2) {
+function lineCenter(position1, position2, delay) {
     var heading = google.maps.geometry.spherical.computeHeading(position1, position2);
-    var distance = time = google.maps.geometry.spherical.computeDistanceBetween(position1, position2) / 2;
-    var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance, heading);
-    var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 4000, heading + 90);
+    var distance = google.maps.geometry.spherical.computeDistanceBetween(position1, position2);
+    var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance / 2, heading);
+
+    var calcHead = Math.acos((soundSpeed * delay) / distance);
+
+    var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 4000, heading + calcHead);
 
     drawLineBetweenTwoLocations(centerPosition, calcPosit, '#00FF00');
 }
