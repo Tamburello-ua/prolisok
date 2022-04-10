@@ -17,16 +17,18 @@ const locations = [
 
 ];
 
-let infoWindow = new google.maps.InfoWindow({
-    content: "Click the map to get Lat/Lng!",
 
-});
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 15,
         center: new google.maps.LatLng(49.950981643157625, 36.035932992177095),
         mapTypeId: "hybrid",
+    });
+
+    let infoWindow = new google.maps.InfoWindow({
+        content: "Click the map to get Lat/Lng!",
+
     });
 
     map.addListener("click", (event) => {
