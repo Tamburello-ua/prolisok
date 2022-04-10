@@ -2,7 +2,7 @@ let map;
 let line;
 let markers = [];
 let coords = [];
-
+let lineColor = 0;
 
 
 const locations = [
@@ -101,10 +101,12 @@ function drawLine() {
     line = new google.maps.Polyline({
         path: coords,
         geodesic: true,
-        strokeColor: '#FF0000',
+        strokeColor: '#' + lineColor + '0000',
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
+
+    lineColor = lineColor + 20;
 
     line.setMap(map);
 }
