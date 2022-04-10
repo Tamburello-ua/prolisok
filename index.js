@@ -125,11 +125,11 @@ function addMarker(position) {
 
     drawLine();
     if (coords.length > 1) {
-        infowindow = new google.maps.InfoWindow({
+        var infowindowL = new google.maps.InfoWindow({
             content: ""
         });
         var description = computeDistanceBetween(position, coords[coords.length - 1]);
-        bindInfoWindow(marker, map, infowindow, description);
+        bindInfoWindow(marker, map, infowindowL, description);
     }
 
 
