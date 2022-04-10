@@ -87,7 +87,7 @@ function calculateBoomPosition() {
     locations.map((position, i) => {
         locations.map((position2, z) => {
             if (i != z) {
-
+                drawLineBetweenTwoLocations(position, position2);
             }
         });
     });
