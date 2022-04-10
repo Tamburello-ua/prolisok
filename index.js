@@ -104,7 +104,7 @@ function lineCenter(position1, position2) {
 }
 
 function drawLineBetweenTwoLocations(location_1, location_2, color = '#FF0000') {
-    var path;
+    var path = [];
     path.push(location_1);
     path.push(location_2);
     var line = new google.maps.Polyline({
