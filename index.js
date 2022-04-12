@@ -16,10 +16,10 @@ let sensorsCenter;
 const locations = [
     { lat: 49.9595031262905, lng: 36.05364630051144 },
     { lat: 49.9578419597522, lng: 36.01864271255960 },
-    // { lat: 49.9476086587322, lng: 36.02009069874675 },
+    { lat: 49.9476086587322, lng: 36.02009069874675 },
     { lat: 49.9451551198959, lng: 36.04336138143805 },
 
-    { lat: 49.95622793512991, lng: 36.16218993492612 },
+    // { lat: 49.95622793512991, lng: 36.16218993492612 },
 ];
 
 const locations2 = [
@@ -69,6 +69,7 @@ function initMap() {
         .addEventListener("click", deleteMarkers);
 
     initMarkers();
+    getMinMaxPoints();
     initSensorsPoly();
 
 };
@@ -96,13 +97,33 @@ function calculateSensorTime(boomPosition) {
     });
 }
 
+let boomDiffPosition = { lat: '', lng: '' }
+
+function calculateBoomHeading() {
+    var latDelay = sensorsTimes[locations.indexOf(maxLat)] - sensorsTimes[locations.indexOf(minLat)];
+    var lngDelay = sensorsTimes[locations.indexOf(maxLng)] - sensorsTimes[locations.indexOf(minLng)];
+
+    if (latDelay > 0) {
+        boomDiffPosition.lat = 'S';
+    } else {
+        boomDiffPosition.lat = 'N';
+    }
+
+    if (lngDelay > 0) {
+        boomDiffPosition.lng = 'W';
+    } else {
+        boomDiffPosition.lng = 'E';
+    }
+}
 
 function calculateBoomPosition() {
+
+    calculateBoomHeading();
+
     let alreadyPoint = [];
 
     locations.map((position, i) => {
         alreadyPoint.push(position);
-
         locations.map((position2, z) => {
 
             if (!alreadyPoint.includes(position2)) {
@@ -114,9 +135,31 @@ function calculateBoomPosition() {
                 // }
                 lineCenter(position, position2, delay);
             }
-
         });
+    });
+}
 
+let maxLat = { lat: -90, lng: -180 };
+let minLat = { lat: 90, lng: 180 };
+let maxLng = { lat: -90, lng: -180 };
+let minLng = { lat: 90, lng: 180 };
+
+function getMinMaxPoints() {
+    locations.map((position, i) => {
+
+        if (position.lat > maxLat.lat) {
+            maxLat = position;
+        }
+        if (position.lat < minLat.lat) {
+            minLat = position;
+        }
+
+        if (position.lng > maxLng.lng) {
+            maxLng = position;
+        }
+        if (position.lng < minLng.lng) {
+            minLng = position;
+        }
     });
 }
 
