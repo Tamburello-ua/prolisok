@@ -11,9 +11,11 @@ function lineCenter(position1, position2, delay) {
     var calcHead = radiansToDegrees(Math.acos(val1));
 
 
-    var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 15000, heading + 0 + calcHead);
-    if (heading < 0) {
-        calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 12000, heading - calcHead)
+    var calcPosit;
+    if (heading > 0) {
+        calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 15000, heading + calcHead);
+    } else {
+        calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 15000, heading - calcHead)
     }
 
     if (delay > 0) {
