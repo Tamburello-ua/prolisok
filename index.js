@@ -4,12 +4,23 @@ let infoWindow;
 let markers = [];
 let coords = [];
 let lineColor = 0;
-let soundSpeed = 331;
+let soundSpeed = 343.1;
 let sensorsTimes = [];
 let boomTime;
+let lines = [];
 
 
 const locations = [
+
+    { lat: 49.9595031262905, lng: 36.05364630051144 },
+    { lat: 49.9578419597522, lng: 36.01864271255960 },
+    // { lat: 49.9476086587322, lng: 36.02009069874675 },
+    { lat: 49.9451551198959, lng: 36.04336138143805 },
+
+];
+
+const locations2 = [
+
     { lat: 49.9595031262905, lng: 36.05364630051144 },
     { lat: 49.9504873054103, lng: 36.04173748576215 },
     { lat: 49.9548533753193, lng: 36.03667952306620 },
@@ -18,6 +29,7 @@ const locations = [
     { lat: 49.9476086587322, lng: 36.02009069874675 },
     { lat: 49.9493699660205, lng: 36.03096957578924 },
     { lat: 49.9451551198959, lng: 36.04336138143805 },
+
 ];
 
 
@@ -67,12 +79,11 @@ function addBoom(position) {
         map,
         icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
     });
-
     boomMarker.setMap(map);
 
     calculateSensorTime(position);
-    calculateBoomPosition();
 
+    calculateBoomPosition();
 }
 
 function calculateSensorTime(boomPosition) {
@@ -84,57 +95,101 @@ function calculateSensorTime(boomPosition) {
     });
 }
 
+
 function calculateBoomPosition() {
+    let alreadyPoint = [];
+
     locations.map((position, i) => {
+        alreadyPoint.push(position);
+
         locations.map((position2, z) => {
-            if (i != z) {
+
+            if (!alreadyPoint.includes(position2)) {
                 // drawLineBetweenTwoLocations(position, position2);
 
                 var delay = sensorsTimes[i] - sensorsTimes[z];
                 // if (sensorsTimes[i] < sensorsTimes[z]) {
                 //     delay = sensorsTimes[z] - sensorsTimes[i];
                 // }
-
                 lineCenter(position, position2, delay);
             }
+
         });
+
     });
 }
 
-function lineCenter(position1, position2, delay) {
-    var heading = google.maps.geometry.spherical.computeHeading(position1, position2);
-    var distance = google.maps.geometry.spherical.computeDistanceBetween(position1, position2);
-    var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance / 2, heading);
 
-    drawLineBetweenTwoLocations(position1, google.maps.geometry.spherical.computeOffset(position1, distance, heading), '#0000FF');
 
-    var val1 = (soundSpeed * delay) / distance;
-    var calcHead = radiansToDegrees(Math.acos(val1));
+function lineCenter2(position1, position2, delay) {
 
-    var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 15000, heading + 0 + calcHead);
+    if (delay > 0) {
+        var heading = google.maps.geometry.spherical.computeHeading(position1, position2);
+        var distance = google.maps.geometry.spherical.computeDistanceBetween(position1, position2);
+        var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance / 2, heading);
 
-    drawLineBetweenTwoLocations(centerPosition, calcPosit, heading > 0 ? '#00FF00' : '#FF0000');
+        drawLineBetweenTwoLocations(position1, google.maps.geometry.spherical.computeOffset(position1, distance, heading), '#0000FF');
+
+        var val1 = (soundSpeed * delay) / distance;
+        var calcHead = radiansToDegrees(Math.acos(val1));
+
+
+        var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 15000, heading + 0 + calcHead);
+        if (heading < 0) {
+            calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 12000, heading - calcHead)
+        }
+
+        drawLineBetweenTwoLocations(centerPosition, calcPosit, heading > 0 ? '#00FF00' : '#FF0000');
+        addLines(centerPosition, calcPosit, heading > 0 ? '#00FF00' : '#FF0000');
+    } else {
+        var heading = google.maps.geometry.spherical.computeHeading(position1, position2);
+        var distance = google.maps.geometry.spherical.computeDistanceBetween(position1, position2);
+        var centerPosition = google.maps.geometry.spherical.computeOffset(position1, distance / 2, heading);
+
+        drawLineBetweenTwoLocations(position1, google.maps.geometry.spherical.computeOffset(position1, distance, heading), '#0000FF');
+
+        var val1 = (soundSpeed * delay) / distance;
+        var calcHead = radiansToDegrees(Math.acos(val1));
+
+
+        var calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 15000, heading + 0 + calcHead);
+        if (heading < 0) {
+            calcPosit = google.maps.geometry.spherical.computeOffset(centerPosition, 12000, heading - calcHead)
+            drawLineBetweenTwoLocations(centerPosition, calcPosit, '#00f0f0');
+        } else {
+            drawLineBetweenTwoLocations(centerPosition, calcPosit, '#00f050');
+        }
+
+        addLines(centerPosition, calcPosit, '#005050');
+    }
 }
 
-function radiansToDegrees(radians) {
-    var pi = Math.PI;
-    return radians * (180 / pi);
-}
-
-function drawLineBetweenTwoLocations(location_1, location_2, color = '#FF0000') {
+function addLines(location_1, location_2, color = '#FF0000') {
     var path = [];
     path.push(location_1);
     path.push(location_2);
-    var line = new google.maps.Polyline({
-        path: path,
-        geodesic: true,
-        strokeColor: color,
-        strokeOpacity: 1.0,
-        strokeWeight: 2
+
+    lines.map((position, i) => {
+        if (i > 0) {
+            let poiIntersect = lineIntersection(location_1.lat(), location_1.lng(), location_2.lat(), location_2.lng(),
+                position[0].lat(), position[0].lng(), position[1].lat(), position[1].lng()
+            )
+            if (poiIntersect) {
+                map.addCircle(new CircleOptions()
+                    .center(poiIntersect)
+                    .radius(10)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE));
+            }
+        }
+
     });
 
-    line.setMap(map);
+    lines.push(path);
 }
+
+
+
 
 function initMarkers() {
     locations.map((position, i) => {
@@ -142,23 +197,7 @@ function initMarkers() {
     });
 }
 
-function drawLine() {
-    line = new google.maps.Polyline({
-        path: coords,
-        geodesic: true,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-    });
 
-    lineColor = lineColor + 10;
-
-    line.setMap(map);
-}
-
-function removeLine() {
-    line.setMap(null);
-}
 
 function addMarker(position) {
     const marker = new google.maps.Marker({
