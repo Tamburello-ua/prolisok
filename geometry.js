@@ -66,3 +66,26 @@ function lineIntersection(Ax, Ay, Bx, By, Cx, Cy, Dx, Dy) {
 function radiansToDegrees(radians) {
     return radians * (180 / Math.PI);
 }
+
+
+function getCenterOfPolygon(polygon) {
+    var PI = 22 / 7;
+    var X = 0;
+    var Y = 0;
+    var Z = 0;
+    polygon.getPath().forEach(function(vertex, inex) {
+        lat1 = vertex.lat();
+        lon1 = vertex.lng();
+        lat1 = lat1 * PI / 180;
+        lon1 = lon1 * PI / 180;
+        X += Math.cos(lat1) * Math.cos(lon1);
+        Y += Math.cos(lat1) * Math.sin(lon1);
+        Z += Math.sin(lat1);
+    });
+    Lon = Math.atan2(Y, X);
+    Hyp = Math.sqrt(X * X + Y * Y);
+    Lat = Math.atan2(Z, Hyp);
+    Lat = Lat * 180 / PI;
+    Lon = Lon * 180 / PI;
+    return new google.maps.LatLng(Lat, Lon);
+}
